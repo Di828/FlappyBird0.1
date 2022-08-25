@@ -3,19 +3,63 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] GameObject obstaclePrefab;
-    float xPosition = 8;
+    [SerializeField] GameObject cloudsPrefab;
+    float xPosition = 10;
     float yPosition;
     float startSpawn = 3f;
-    float repeatTime = 2f;
+    float timeObstacles;
+    float repeatTimeObstacles = 2f;
+    float repeatTimeClouds = 35f;
+    float timeClouds = 0;
     float obstacleYRange = 2.5f;
-    void Start()
+    float xPositionClouds = 19;
+    float yCloudsRange = 0.5f;
+    bool onPlay = false;
+    private void Awake()
     {
-        InvokeRepeating("SpawnObstacles", startSpawn, repeatTime);
+        GameManager.onGameStart.AddListener(StartGame);
+        GameManager.onGameOver.AddListener(GameOver);
+        timeObstacles = startSpawn;
     }
-    void SpawnObstacles()
+    private void Update()
+    {
+        if (onPlay)
+        {
+            if (timeObstacles <= 0)
+            {
+                SpawnObstacle();
+                timeObstacles = repeatTimeObstacles;
+            }
+            else
+                timeObstacles -= Time.deltaTime;
+            if (timeClouds <= 0)
+            {
+                SpawnClouds();
+                timeClouds = repeatTimeClouds;
+            }
+            else
+                timeClouds -= Time.deltaTime;
+        }            
+    }
+    void StartGame()
+    {
+        onPlay = true;
+    }
+    void GameOver()
+    {
+        Debug.Log("SpawnManagerGameOver");
+        onPlay = false;
+    }
+    void SpawnObstacle()
     {        
         yPosition = Random.Range(-obstacleYRange, obstacleYRange);
         var spawnPosition = new Vector2(xPosition, yPosition);
         Instantiate(obstaclePrefab,spawnPosition,transform.rotation);
+    }
+    void SpawnClouds()
+    {
+        yPosition = Random.Range(-yCloudsRange, yCloudsRange);
+        var spawnPosition = new Vector2(xPositionClouds, 0);
+        Instantiate(cloudsPrefab, spawnPosition, transform.rotation);
     }
 }
