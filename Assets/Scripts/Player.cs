@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
     [SerializeField] float speed = 5f;
     bool onPlay = false;
     Rigidbody2D playerRB;
+    Touch touch;
     private void Awake()
     {
         GameManager.onGameStart.AddListener(GameStart);
@@ -18,9 +19,13 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && onPlay)
+        if (Input.touchCount > 0 && onPlay)        
         {
-            playerRB.AddForce(Vector2.up * speed, ForceMode2D.Impulse);
+            touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+            {
+                playerRB.AddForce(Vector2.up * speed, ForceMode2D.Impulse);
+            }
         }
     }
     void GameStart()
