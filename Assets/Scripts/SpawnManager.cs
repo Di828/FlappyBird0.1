@@ -19,6 +19,7 @@ public class SpawnManager : MonoBehaviour
     {
         GameManager.onGameStart.AddListener(StartGame);
         GameManager.onGameOver.AddListener(GameOver);
+        SpawnPlayer();        
         timeObstacles = startSpawn;
     }
     private void Update()
@@ -46,8 +47,7 @@ public class SpawnManager : MonoBehaviour
         onPlay = true;
     }
     void GameOver()
-    {
-        Debug.Log("SpawnManagerGameOver");
+    {        
         onPlay = false;
     }
     void SpawnObstacle()
@@ -61,5 +61,12 @@ public class SpawnManager : MonoBehaviour
         yPosition = Random.Range(-yCloudsRange, yCloudsRange);
         var spawnPosition = new Vector2(xPositionClouds, 0);
         Instantiate(cloudsPrefab, spawnPosition, transform.rotation);
+    }
+    void SpawnPlayer()
+    {
+        var spawnPosition = new Vector2(-6, 0);
+        var player = Instantiate(GameManager.Instance.birdsList[GameManager.selectedBirdNumber], spawnPosition,
+            GameManager.Instance.birdsList[GameManager.selectedBirdNumber].transform.rotation);
+        player.transform.localScale = Vector3.one * 1.5f;
     }
 }

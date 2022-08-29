@@ -40,7 +40,7 @@ public class UIManager : MonoBehaviour
     }
     private void ShowHighscore()
     {
-        highScoreText.text = "Highscore: " + GameManager.LoadHighScore();
+        highScoreText.text = "Highscore: " + GameManager.highScore;
     }
     public void GameStartButtonPressed()
     {
@@ -60,10 +60,15 @@ public class UIManager : MonoBehaviour
     public void Restart()
     {
         GameManager.score = 0;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Game");
     }
     void ShowTimer(float timer)
     {
         counterText.text = timer.ToString("#");
+    }
+    public void BackToMainMenu()
+    {
+        GameManager.score = 0;
+        SceneManager.LoadScene("StartScene");
     }
 }

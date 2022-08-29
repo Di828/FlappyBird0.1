@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
                 playerRB.AddForce(Vector2.up * speed, ForceMode2D.Impulse);
             }
         }
+        if (Input.GetKeyDown(KeyCode.Space) && onPlay)
+            playerRB.AddForce(Vector2.up * speed, ForceMode2D.Impulse);
     }
     void GameStart()
     {
